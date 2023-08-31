@@ -40,14 +40,14 @@ const handleLoadVideos =(categoryId)=>{
         const div = document.createElement('div');
         div.className = 'card card-compact bg-base-100';
         div.innerHTML = `
-        <figure><img src=${video?.thumbnail} alt="" /></figure>
+        <figure><img class="h-[200px]" src=${video?.thumbnail} alt="" /></figure>
         <div class="mt-4">
             <div class="flex items-start gap-2">
                 <div>
                     <img class="w-9 rounded-full" src=${video?.authors[0]?.profile_picture} />
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold">${video?.title}</h3>
+                    <h3 class="text-lg font-bold">${video?.title}</h3>
                     <div class="flex items-center gap-2">
                         <p class="text-gray-500">${video?.authors[0]?.profile_name}</p>
                         <span>${video?.authors[0]?.verified ? '<i class="far fa-check-circle text-blue-600"></i>' : ''}</span>
