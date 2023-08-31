@@ -36,11 +36,16 @@ const handleLoadVideos =(categoryId)=>{
     // loop through all the videos in the array
         trimedData.forEach((video)=>{
         console.log(video);
-        console.log(video.others.views);
+        console.log(typeof video.others.posted_date);
+        const seconds = parseInt(video?.others?.posted_date);
+        console.log(seconds);
         const div = document.createElement('div');
-        div.className = 'card card-compact bg-base-100';
+        div.className = 'card-compact bg-base-100';
         div.innerHTML = `
-        <figure><img class="h-[200px]" src=${video?.thumbnail} alt="" /></figure>
+        <figure><img class="h-[200px] w-full md:w-[300px] rounded-lg" src=${video?.thumbnail} alt="" /></figure>
+        <div class="absolute bg-black opacity-70 text-white text-xs p-1 -mt-8 ml-52 md:-mt-8 md:ml-40">
+           <p>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor(seconds/3600)).concat('hrs'))} <span>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor((seconds/60)%60)).concat(' ', 'min ago'))}</span</p>
+        </div>
         <div class="mt-4">
             <div class="flex items-start gap-2">
                 <div>
@@ -57,6 +62,7 @@ const handleLoadVideos =(categoryId)=>{
             </div>
         </div>
         `;
+        
         videoContainer.appendChild(div);
         });
     };
