@@ -1,6 +1,7 @@
 // Define UI variables
 const categoryContainer = document.getElementById('category-container');
 const videoContainer = document.getElementById('videos-container');
+const noDataAvailable = document.getElementById('no-data-available-div');
 
 const loadCategories = async ()=>{
     const res = await fetch('https://openapi.programming-hero.com/api/videos/categories');
@@ -27,18 +28,31 @@ const handleLoadVideos =(categoryId)=>{
     // fetch data from the api, videos
     const loadVideos = async()=>{
     const res = await fetch(`https://openapi.programming-hero.com/api/videos/category/${categoryId}`);
+    // console.log(categoryId);
     const data = await res.json();
     const trimedData = data.data;
-    
-    
+    console.log(typeof trimedData);
+    console.log(trimedData);
     // clear the video container element
     videoContainer.innerHTML = '';
+    
+    if(trimedData.length === 0) {
+       noDataAvailable.innerHTML = `
+       <div><img src="./images/Icon.png"></div>
+       <h2 class="text-2xl font-bold text-center">Oops!! Sorry, There is no<br> content here</h2>
+       `;
+       noDataAvailable.classList.remove('hidden');
+       return noDataAvailable;
+    } else {
+        noDataAvailable.classList.add('hidden')
+    }
+    
     // loop through all the videos in the array
-        trimedData.forEach((video)=>{
-        console.log(video);
-        console.log(typeof video.others.posted_date);
+        trimedData.forEach((video, index)=>{
+        // console.log(video);
+        // console.log(typeof video.others.posted_date);
         const seconds = parseInt(video?.others?.posted_date);
-        console.log(seconds);
+        // console.log(seconds);
         const div = document.createElement('div');
         div.className = 'card-compact bg-base-100';
         div.innerHTML = `
