@@ -36,7 +36,7 @@ const handleLoadVideos =(categoryId)=>{
     // loop through all the videos in the array
         trimedData.forEach((video)=>{
         console.log(video);
-        console.log(video.authors[0].verified);
+        console.log(video.others.views);
         const div = document.createElement('div');
         div.className = 'card card-compact bg-base-100';
         div.innerHTML = `
@@ -44,14 +44,15 @@ const handleLoadVideos =(categoryId)=>{
         <div class="mt-4">
             <div class="flex items-start gap-2">
                 <div>
-                    <img class="w-9 rounded-full" src=${video.authors[0].profile_picture} />
+                    <img class="w-9 rounded-full" src=${video?.authors[0]?.profile_picture} />
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold">${video.title}</h3>
+                    <h3 class="text-lg font-semibold">${video?.title}</h3>
                     <div class="flex items-center gap-2">
-                        <p>${video.authors[0].profile_name}</p>
-                        <span>${video.authors[0].verified ? '<i class="far fa-check-circle text-blue-600"></i>' : ''}</span>
+                        <p class="text-gray-500">${video?.authors[0]?.profile_name}</p>
+                        <span>${video?.authors[0]?.verified ? '<i class="far fa-check-circle text-blue-600"></i>' : ''}</span>
                     </div>
+                    <p class="text-gray-500">${video?.others?.views}</p>
                 </div>
             </div>
         </div>
