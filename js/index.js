@@ -74,7 +74,7 @@ const handleLoadVideos =(categoryId)=>{
         const div = document.createElement('div');
         div.className = 'card-compact bg-base-100';
         div.innerHTML = `
-        <figure><img class="h-[200px] rounded-lg" src=${video?.thumbnail} alt="" /></figure>
+        <figure><img class="h-[200px] w-full mx-auto md:w-[300px] rounded-lg" src=${video?.thumbnail} alt="" /></figure>
         <div class="absolute bg-black opacity-70 text-white text-xs p-1 -mt-8 ml-52 md:-mt-8 md:ml-40">
            <p>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor(seconds/3600)).concat('hrs'))} <span>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor((seconds/60)%60)).concat(' ', 'min ago'))}</span</p>
         </div>
