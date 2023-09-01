@@ -3,6 +3,7 @@ const categoryContainer = document.getElementById('category-container');
 const videoContainer = document.getElementById('videos-container');
 const noDataAvailable = document.getElementById('no-data-available-div');
 
+
 const loadCategories = async ()=>{
     const res = await fetch('https://openapi.programming-hero.com/api/videos/categories');
     const data = await res.json();
@@ -82,7 +83,7 @@ const handleLoadVideos =(categoryId)=>{
     };
     // call the load videos function
     loadVideos();
-}
+};
 
 const loadAllVideos = async()=>{
     const res = await fetch('https://openapi.programming-hero.com/api/videos/category/1000');
@@ -139,4 +140,9 @@ const loadAllVideos = async()=>{
         });
     };
 
-    loadAllVideos();
+loadAllVideos();
+
+// blog btn function
+const handleBlogBtn = ()=>{
+    window.location.href = 'blog.html'
+};
