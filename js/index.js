@@ -14,15 +14,22 @@ const loadCategories = async ()=>{
         const categoryId = category.category_id;
         const div = document.createElement('div');
         div.innerHTML = `
-        <button onclick="handleLoadVideos(${categoryId})" class="btn">${category.category}</button>
+        <button onclick="handleLoadVideos(${categoryId})" class="btn category-btn">${category.category}</button>
         `;
         categoryContainer.appendChild(div);
-
-    })
-}
-
-// load Categoriee function
+    });
+    // make the category buttons active when clicked
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    categoryButtons.forEach((button)=>{
+       button.addEventListener('click', ()=>{
+            document.querySelector('.active')?.classList.remove('active');
+            button.classList.add('active');
+       });
+    });  
+};
+// load Categories function
 loadCategories();
+
 
 // handle load videos function
 const handleLoadVideos =(categoryId)=>{
@@ -206,5 +213,6 @@ const handleSortBtn = async()=>{
 
         videoContainer.appendChild(div);
         });
-    
 };
+
+
