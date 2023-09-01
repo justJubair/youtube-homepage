@@ -2,6 +2,18 @@
 const categoryContainer = document.getElementById('category-container');
 const videoContainer = document.getElementById('videos-container');
 const noDataAvailable = document.getElementById('no-data-available-div');
+const loadingSpinner = document.getElementById('loading-spinner');
+
+// toggle loading spinner
+const toggleLoadingSpinner = (isLoading)=>{
+   
+    if(isLoading){
+        loadingSpinner.classList.remove('hidden')
+    } else{
+        loadingSpinner.classList.add('hidden');
+    }
+}
+
 
 // load categories
 const loadCategories = async ()=>{
@@ -32,7 +44,7 @@ loadCategories();
 
 
 // handle load videos function
-const handleLoadVideos =(categoryId)=>{
+const handleLoadVideos =(categoryId)=>{ 
     // fetch data from the api, videos
     const loadVideos = async()=>{
     const res = await fetch(`https://openapi.programming-hero.com/api/videos/category/${categoryId}`);
@@ -56,10 +68,9 @@ const handleLoadVideos =(categoryId)=>{
     
     // loop through all the videos in the array
         trimedData.forEach((video)=>{
-        // console.log(video);
-        // console.log(typeof video.others.posted_date);
+        
         const seconds = parseInt(video?.others?.posted_date);
-        // console.log(seconds);
+        
         const div = document.createElement('div');
         div.className = 'card-compact bg-base-100';
         div.innerHTML = `
@@ -86,12 +97,15 @@ const handleLoadVideos =(categoryId)=>{
 
         videoContainer.appendChild(div);
         });
+       
     };
     // call the load videos function
     loadVideos();
 };
 
 const loadAllVideos = async()=>{
+    // loading spinner
+    toggleLoadingSpinner(true)
     const res = await fetch('https://openapi.programming-hero.com/api/videos/category/1000');
     // console.log(categoryId);
     const data = await res.json();
@@ -112,38 +126,38 @@ const loadAllVideos = async()=>{
     }
     
     // loop through all the videos in the array
-        trimedData.forEach((video)=>{
-        // console.log(video);
-        // console.log(typeof video.others.posted_date);
-        const seconds = parseInt(video?.others?.posted_date);
-        // console.log(seconds);
-        const div = document.createElement('div');
-        div.className = 'card-compact bg-base-100';
-        div.innerHTML = `
-        <figure><img class="h-[200px] w-full mx-auto md:w-[300px] rounded-lg" src=${video?.thumbnail} alt="" /></figure>
-        <div class="absolute bg-black opacity-70 text-white text-xs p-1 -mt-8 ml-52 md:-mt-8 md:ml-40">
-           <p>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor(seconds/3600)).concat('hrs'))} <span>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor((seconds/60)%60)).concat(' ', 'min ago'))}</span</p>
-        </div>
-        <div class="mt-4">
-            <div class="flex items-start gap-2">
-                <div>
-                    <img class="w-9 rounded-full" src=${video?.authors[0]?.profile_picture} />
+    trimedData.forEach((video)=>{
+    // console.log(video);
+    // console.log(typeof video.others.posted_date);
+    const seconds = parseInt(video?.others?.posted_date);
+    // console.log(seconds);
+    const div = document.createElement('div');
+    div.className = 'card-compact bg-base-100';
+    div.innerHTML = `
+    <figure><img class="h-[200px] w-full mx-auto md:w-[300px] rounded-lg" src=${video?.thumbnail} alt="" /></figure>
+    <div class="absolute bg-black opacity-70 text-white text-xs p-1 -mt-8 ml-52 md:-mt-8 md:ml-40">
+        <p>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor(seconds/3600)).concat('hrs'))} <span>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor((seconds/60)%60)).concat(' ', 'min ago'))}</span</p>
+    </div>
+    <div class="mt-4">
+        <div class="flex items-start gap-2">
+            <div>
+                <img class="w-9 rounded-full" src=${video?.authors[0]?.profile_picture} />
+            </div>
+            <div>
+                <h3 class="text-lg font-bold">${video?.title}</h3>
+                <div class="flex items-center gap-2">
+                    <p class="text-gray-500">${video?.authors[0]?.profile_name}</p>
+                    <span>${video?.authors[0]?.verified ? '<i class="far fa-check-circle text-blue-600"></i>' : ''}</span>
                 </div>
-                <div>
-                    <h3 class="text-lg font-bold">${video?.title}</h3>
-                    <div class="flex items-center gap-2">
-                        <p class="text-gray-500">${video?.authors[0]?.profile_name}</p>
-                        <span>${video?.authors[0]?.verified ? '<i class="far fa-check-circle text-blue-600"></i>' : ''}</span>
-                    </div>
-                    <p class="text-gray-500">${video?.others?.views}</p>
-                </div>
+                <p class="text-gray-500">${video?.others?.views}</p>
             </div>
         </div>
-        `;
-
-        videoContainer.appendChild(div);
-        });
-    };
+    </div>
+    `;
+    videoContainer.appendChild(div);
+    });
+    toggleLoadingSpinner(false);
+};
 
 loadAllVideos();
 
@@ -154,6 +168,7 @@ const handleBlogBtn = ()=>{
 
 // sort btn function
 const handleSortBtn = async()=>{
+    toggleLoadingSpinner(true);
     const res = await fetch('https://openapi.programming-hero.com/api/videos/category/1000');
     let data = await res.json();
     data = data.data;
@@ -183,36 +198,34 @@ const handleSortBtn = async()=>{
 
     // loop through all the videos in the array
     trimedData.forEach((video)=>{
-        // console.log(video);
-        // console.log(typeof video.others.posted_date);
-        const seconds = parseInt(video?.others?.posted_date);
-        // console.log(seconds);
-        const div = document.createElement('div');
-        div.className = 'card-compact bg-base-100';
-        div.innerHTML = `
-        <figure><img class="h-[200px] w-full md:w-[300px] rounded-lg" src=${video?.thumbnail} alt="" /></figure>
-        <div class="absolute bg-black opacity-70 text-white text-xs p-1 -mt-8 ml-52 md:-mt-8 md:ml-40">
-           <p>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor(seconds/3600)).concat('hrs'))} <span>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor((seconds/60)%60)).concat(' ', 'min ago'))}</span</p>
-        </div>
-        <div class="mt-4">
-            <div class="flex items-start gap-2">
-                <div>
-                    <img class="w-9 rounded-full" src=${video?.authors[0]?.profile_picture} />
+    const seconds = parseInt(video?.others?.posted_date);
+    // console.log(seconds);
+    const div = document.createElement('div');
+    div.className = 'card-compact bg-base-100';
+    div.innerHTML = `
+    <figure><img class="h-[200px] w-full md:w-[300px] rounded-lg" src=${video?.thumbnail} alt="" /></figure>
+    <div class="absolute bg-black opacity-70 text-white text-xs p-1 -mt-8 ml-52 md:-mt-8 md:ml-40">
+        <p>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor(seconds/3600)).concat('hrs'))} <span>${isNaN(seconds) ? '' : (JSON.stringify(Math.floor((seconds/60)%60)).concat(' ', 'min ago'))}</span</p>
+    </div>
+    <div class="mt-4">
+        <div class="flex items-start gap-2">
+            <div>
+                <img class="w-9 rounded-full" src=${video?.authors[0]?.profile_picture} />
+            </div>
+            <div>
+                <h3 class="text-lg font-bold">${video?.title}</h3>
+                <div class="flex items-center gap-2">
+                    <p class="text-gray-500">${video?.authors[0]?.profile_name}</p>
+                    <span>${video?.authors[0]?.verified ? '<i class="far fa-check-circle text-blue-600"></i>' : ''}</span>
                 </div>
-                <div>
-                    <h3 class="text-lg font-bold">${video?.title}</h3>
-                    <div class="flex items-center gap-2">
-                        <p class="text-gray-500">${video?.authors[0]?.profile_name}</p>
-                        <span>${video?.authors[0]?.verified ? '<i class="far fa-check-circle text-blue-600"></i>' : ''}</span>
-                    </div>
-                    <p class="text-gray-500">${video?.others?.views}</p>
-                </div>
+                <p class="text-gray-500">${video?.others?.views}</p>
             </div>
         </div>
-        `;
+    </div>
+    `;
 
-        videoContainer.appendChild(div);
-        });
+    videoContainer.appendChild(div);
+    });
+    toggleLoadingSpinner(false);
 };
-
 
